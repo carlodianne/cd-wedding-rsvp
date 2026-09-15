@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding RSVP</title>
+<style>
+:root{--ivory:#f7f3e9;--paper:#fffdf8;--olive:#31432e;--ink:#273026;--muted:#687062;--line:#d9d8ca;--rose:#8b5046}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.app-shell{min-height:100vh;position:relative;overflow:hidden;padding:2rem 1.25rem;display:flex;align-items:center;justify-content:center}
+.app-shell:before,.app-shell:after{content:"";position:absolute;width:23rem;height:23rem;border:1px solid rgba(49,67,46,.14);border-radius:50%;pointer-events:none}
+.app-shell:before{top:-13rem;left:-10rem}.app-shell:after{right:-12rem;bottom:-14rem}
+.card{width:100%;max-width:43rem;min-height:34rem;position:relative;z-index:1;padding:3.5rem 3rem;background:var(--paper);border:1px solid var(--line);box-shadow:0 22px 55px rgba(42,51,37,.10)}
+.screen[hidden]{display:none}
+header{text-align:center}
+.kicker{text-transform:uppercase;letter-spacing:.25em;font-size:12px;font-weight:700;color:var(--olive)}
+.rule{width:4.5rem;height:1px;margin:1.25rem auto;background:var(--olive);opacity:.6}
+h1,h2{margin:0;color:var(--olive);font-family:Georgia,"Times New Roman",serif;font-weight:500}
+h1{font-size:2.2rem}h2{font-size:2rem}
+.intro{max-width:28rem;margin:1.5rem auto 0;color:var(--muted);line-height:1.6;font-size:1rem}
+form{max-width:28rem;margin:2.5rem auto 0}
+input{width:100%;border:1px solid var(--line);background:#fffefb;padding:1rem;border-radius:0;font-size:1rem;color:var(--ink)}
+input:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px rgba(49,67,46,.12)}
+button{font:inherit;cursor:pointer}
+.primary{width:100%;margin-top:1.25rem;border:0;background:var(--olive);color:#fff;padding:1rem 1.25rem;text-transform:uppercase;letter-spacing:.18em;font-size:.75rem;font-weight:700}
+.primary:disabled{cursor:not-allowed;opacity:.66}
+.guest-section{margin-top:2.25rem}.guest-heading{color:var(--olive);text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:700}
+.guest-list{margin-top:1rem;display:grid;gap:.75rem}
+.guest-card{border:1px solid var(--line);background:#fffefb;padding:1rem}.guest-card.responded{border-color:#a7b29c;background:#f1f3eb}
+.guest-name{font-weight:700;color:var(--ink)}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem}
+.choice{border:1px solid var(--line);background:#fffefb;color:var(--olive);padding:.8rem .6rem;font-size:.8rem;font-weight:700}
+.choice.selected.accept{background:var(--olive);border-color:var(--olive);color:#fff}
+.choice.selected.decline{background:var(--rose);border-color:var(--rose);color:#fff}
+.notice{margin-top:1rem;color:var(--rose);font-size:.9rem;line-height:1.5}
+.small-link{display:block;margin:1.25rem auto 0;border:0;background:transparent;color:var(--olive);text-decoration:underline;text-underline-offset:4px;font-size:.9rem}
+.thankyou{min-height:27rem;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.loading:after{content:"";display:inline-block;width:.9rem;height:.9rem;margin-left:.4rem;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;vertical-align:-2px;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.app-shell{padding:1rem}.card{padding:2rem 1.25rem;min-height:calc(100vh - 2rem)}.choice-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="app-shell">
+<section class="card">
+<div id="searchScreen" class="screen">
+<header>
+<div class="kicker">The Wedding of Carlo &amp; Dianne</div><div class="rule"></div><h1>RSVP</h1>
+<p class="intro">We'd love to celebrate with you. Enter your full name to find your invitation.</p>
+</header>
+<form id="searchForm">
+<input id="guestSearch" type="text" autocomplete="name" placeholder="Your full name" required>
+<button id="searchButton" class="primary" type="submit">Find My Invitation</button>
+<div id="searchError" class="notice" hidden></div>
+</form>
+</div>
+
+<div id="invitationScreen" class="screen" hidden>
+<header>
+<div class="kicker">A joyful occasion</div><div class="rule"></div><h2>We found your invitation</h2>
+<p class="intro">You have <strong id="seatCount">0</strong> seats reserved.</p>
+</header>
+<section class="guest-section">
+<div class="guest-heading">Please respond for each guest</div>
+<div id="guestList" class="guest-list"></div>
+<div id="responseError" class="notice" hidden></div>
+<button id="confirmButton" class="primary" type="button">Confirm RSVP</button>
+<button id="searchAgainButton" class="small-link" type="button">Search for another invitation</button>
+</section>
+</div>
+
+<div id="thankyouScreen" class="screen thankyou" hidden>
+<div>
+<div class="kicker">With gratitude</div><div class="rule"></div><h2>Thank you</h2>
+<p class="intro">Your RSVP has been received. We can't wait to celebrate with you.</p>
+<button id="thankyouSearchAgain" class="small-link" type="button">Search for another invitation</button>
+</div>
+</div>
+</section>
+</main>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbxjUlVyPQ_RsbV3Nlq4DdRJYgKYmd6ECW04CU5eShAQuZvBEryTQAmJ9x7UingR_a7g/exec";
+let invitationGuests=[],selectedResponses=new Map(),currentGroupId="";
+const searchScreen=document.getElementById("searchScreen"),invitationScreen=document.getElementById("invitationScreen"),thankyouScreen=document.getElementById("thankyouScreen"),searchButton=document.getElementById("searchButton"),confirmButton=document.getElementById("confirmButton");
+
+function showScreen(screen){[searchScreen,invitationScreen,thankyouScreen].forEach(s=>s.hidden=s!==screen)}
+function showError(id,message){const el=document.getElementById(id);el.textContent=message;el.hidden=false}
+function hideError(id){document.getElementById(id).hidden=true}
+function setLoading(button,loading,label){button.disabled=loading;button.textContent=loading?label+"…":label;button.classList.toggle("loading",loading)}
+
+function apiRequest(params){
+ return new Promise((resolve,reject)=>{
+  const callbackName="rsvpCallback_"+Date.now()+"_"+Math.floor(Math.random()*100000),script=document.createElement("script");
+  const query=new URLSearchParams({...params,callback:callbackName});
+  const cleanup=()=>{delete window[callbackName];script.remove()};
+  window[callbackName]=data=>{cleanup();resolve(data)};
+  script.onerror=()=>{cleanup();reject(new Error("Unable to connect to RSVP service."))};
+  script.src=API_URL+"?"+query.toString();document.body.appendChild(script);
+ });
+}
+
+function renderInvitation(){
+ const list=document.getElementById("guestList");list.replaceChildren();
+ invitationGuests.forEach(guest=>{
+  const card=document.createElement("article");card.className="guest-card";
+  const name=document.createElement("div");name.className="guest-name";name.textContent=guest.name;
+  const grid=document.createElement("div");grid.className="choice-grid";
+  const accept=document.createElement("button");accept.className="choice accept";accept.type="button";accept.textContent="Joyfully Accepts";
+  const decline=document.createElement("button");decline.className="choice decline";decline.type="button";decline.textContent="Regretfully Declines";
+  function select(response){
+   selectedResponses.set(guest.name,response);
+   accept.classList.toggle("selected",response==="Accepted");
+   decline.classList.toggle("selected",response==="Declined");
+   card.classList.add("responded");hideError("responseError");
+  }
+  accept.addEventListener("click",()=>select("Accepted"));decline.addEventListener("click",()=>select("Declined"));
+  grid.append(accept,decline);card.append(name,grid);list.appendChild(card);
+ });
+}
+
+document.getElementById("searchForm").addEventListener("submit",async event=>{
+ event.preventDefault();hideError("searchError");
+ const name=document.getElementById("guestSearch").value.trim();
+ if(!name){showError("searchError","Please enter the full name shown on your invitation.");return}
+ setLoading(searchButton,true,"Finding Your Invitation");
+ try{
+  const result=await apiRequest({action:"find",name});
+  if(!result.success){showError("searchError",result.message||"We could not find your invitation.");return}
+  currentGroupId=result.groupId;invitationGuests=Array.isArray(result.guests)?result.guests:[];selectedResponses=new Map();
+  if(!invitationGuests.length){showError("searchError","We could not load your invitation. Please try again.");return}
+  document.getElementById("seatCount").textContent=result.seats;
+  renderInvitation();showScreen(invitationScreen);
+ }catch(error){showError("searchError","We are unable to connect to the RSVP service right now. Please try again.")}
+ finally{setLoading(searchButton,false,"Find My Invitation")}
+});
+
+confirmButton.addEventListener("click",async()=>{
+ hideError("responseError");
+ if(selectedResponses.size!==invitationGuests.length){showError("responseError","Please select a response for every guest before confirming.");return}
+ const responses=invitationGuests.map(guest=>({name:guest.name,response:selectedResponses.get(guest.name)}));
+ setLoading(confirmButton,true,"Submitting RSVP");
+ try{
+  const result=await apiRequest({action:"rsvp",groupId:currentGroupId,responses:JSON.stringify(responses)});
+  if(!result.success){showError("responseError",result.message||"We were unable to save your RSVP. Please try again.");return}
+  showScreen(thankyouScreen);
+ }catch(error){showError("responseError","We were unable to save your RSVP. Please try again.")}
+ finally{setLoading(confirmButton,false,"Confirm RSVP")}
+});
+
+function resetSearch(){
+ document.getElementById("guestSearch").value="";invitationGuests=[];selectedResponses=new Map();currentGroupId="";
+ hideError("searchError");hideError("responseError");showScreen(searchScreen);
+ setTimeout(()=>document.getElementById("guestSearch").focus(),50);
+}
+document.getElementById("searchAgainButton").addEventListener("click",resetSearch);
+document.getElementById("thankyouSearchAgain").addEventListener("click",resetSearch);
+</script>
+</body>
+</html>
