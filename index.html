@@ -472,7 +472,7 @@ input[type="text"]:focus {
 
     <div class="rule"></div>
 
-    <h2>We found your invitation</h2>
+    <h2>We've found your invitation</h2>
 
     <div id="seatSummary" class="summary"></div>
 
@@ -988,11 +988,10 @@ lookupForm.addEventListener("submit", async event => {
       Number(result.seats) ||
       guests.length;
 
-    document.getElementById("seatSummary").textContent =
-      seats === 1
-        ? "One seat has been reserved in your honour."
-        : seats +
-          " seats have been reserved in your honour.";
+document.getElementById("seatSummary").innerHTML =
+  seats === 1
+    ? "<strong>One seat</strong> has been reserved in your honour."
+    : "<strong>" + seats + " seats</strong> have been reserved in your honour.";
 
     renderGuests();
     show(response);
