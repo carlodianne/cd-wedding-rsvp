@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
 
 <head>
@@ -114,12 +115,54 @@ body{
 }
 
 
+/************************************************************
+ * WEDDING HEADER
+ ************************************************************/
+
+.wedding-header{
+  text-align:center;
+}
+
+
 .logo{
   display:block;
-  width:105px;
-  max-width:30vw;
+  width:112px;
+  max-width:32vw;
   height:auto;
-  margin:0 auto;
+  margin:0 auto 15px;
+}
+
+
+.wedding-eyebrow{
+  color:var(--olive);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+
+.wedding-names{
+  margin-top:7px;
+  color:var(--deep);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:31px;
+  line-height:1.15;
+}
+
+
+.wedding-meta{
+  margin-top:12px;
+  color:var(--muted);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:14px;
+  line-height:1.75;
+}
+
+
+.wedding-meta strong{
+  color:var(--deep);
+  font-weight:400;
 }
 
 
@@ -198,6 +241,7 @@ input{
   font:inherit;
   font-size:16px;
   outline:none;
+  border-radius:0;
 }
 
 
@@ -347,6 +391,16 @@ button{
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:.04em;
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
+}
+
+
+.choice:hover{
+  transform:translateY(-1px);
 }
 
 
@@ -412,6 +466,7 @@ button{
   font-size:12px;
   font-weight:700;
   text-transform:uppercase;
+  letter-spacing:.04em;
   cursor:pointer;
 }
 
@@ -425,21 +480,36 @@ button{
 
 .dietary-details{
   margin-top:10px;
+  animation:dietaryReveal .25s ease both;
+}
+
+
+.dietary-details input{
+  font-size:14px;
+  padding:12px 13px;
 }
 
 
 .dietary-help{
   margin-top:7px;
-  font-size:12px;
   color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
 }
 
 
 .thanks{
-  min-height:360px;
+  min-height:390px;
   display:flex;
   align-items:center;
   justify-content:center;
+}
+
+
+#lookup:not(.hidden),
+#response:not(.hidden),
+#thanks:not(.hidden){
+  animation:sectionReveal .4s ease both;
 }
 
 
@@ -448,6 +518,21 @@ button{
   from{
     opacity:0;
     transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+
+@keyframes sectionReveal{
+
+  from{
+    opacity:0;
+    transform:translateY(6px);
   }
 
   to{
@@ -495,25 +580,54 @@ button{
     align-items:flex-start;
   }
 
+
   .card{
-    padding:36px 22px;
+    padding:34px 22px;
   }
+
+
+  .card:before{
+    inset:8px;
+  }
+
 
   .choices,
   .radio-row{
     flex-direction:column;
   }
 
+
   h1{
     font-size:34px;
   }
+
 
   h2{
     font-size:28px;
   }
 
+
   .logo{
-    width:90px;
+    width:96px;
+  }
+
+
+  .wedding-names{
+    font-size:27px;
+  }
+
+}
+
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
   }
 
 }
@@ -533,32 +647,52 @@ button{
 <div class="inner">
 
 
+<!-- ======================================================
+     HOME / LOGIN SCREEN
+======================================================= -->
+
 <section id="lookup">
 
-<div class="center">
+
+<div class="wedding-header">
 
 <img
   src="cd-logo.png"
-  alt="Carlo and Dianne"
+  alt="Carlo and Dianne monogram"
   class="logo"
 >
 
-<div
-  class="kicker"
-  style="margin-top:18px"
->
-  The Wedding of Carlo &amp; Dianne
+<div class="wedding-eyebrow">
+  The Wedding of
 </div>
 
-<h1 style="margin-top:10px">
-  Kindly Reply
-</h1>
+<div class="wedding-names">
+  Carlo &amp; Dianne
+</div>
+
+<div class="wedding-meta">
+
+  <strong>
+    Isarog Ballroom, Summit Hotel Naga
+  </strong>
+
+  <br>
+
+  November 17, 2026 | 3:00 PM
+
+</div>
+
+</div>
+
 
 <div class="rule"></div>
 
-<h2>
-  Your invitation awaits
-</h2>
+
+<div class="center">
+
+<h1>
+  RSVP
+</h1>
 
 <p class="copy">
   Please enter your full name exactly as it appears
@@ -586,6 +720,7 @@ button{
   autocomplete="name"
   placeholder="Enter your full name"
   required
+  minlength="2"
   maxlength="100"
 >
 
@@ -637,19 +772,51 @@ button{
 </section>
 
 
+<!-- ======================================================
+     INVITATION FOUND SCREEN
+======================================================= -->
+
 <section
   id="response"
   class="hidden"
 >
 
 
-<div class="center">
+<div class="wedding-header">
 
-<div class="kicker">
-  Your Invitation
+<img
+  src="cd-logo.png"
+  alt="Carlo and Dianne monogram"
+  class="logo"
+>
+
+<div class="wedding-eyebrow">
+  The Wedding of
 </div>
 
+<div class="wedding-names">
+  Carlo &amp; Dianne
+</div>
+
+<div class="wedding-meta">
+
+  <strong>
+    Isarog Ballroom, Summit Hotel Naga
+  </strong>
+
+  <br>
+
+  November 17, 2026 | 3:00 PM
+
+</div>
+
+</div>
+
+
 <div class="rule"></div>
+
+
+<div class="center">
 
 <h2>
   We've found your invitation
@@ -706,6 +873,10 @@ button{
 </section>
 
 
+<!-- ======================================================
+     THANK YOU SCREEN
+======================================================= -->
+
 <section
   id="thanks"
   class="hidden thanks"
@@ -717,7 +888,7 @@ button{
 
 <img
   src="cd-logo.png"
-  alt="Carlo and Dianne"
+  alt="Carlo and Dianne monogram"
   class="logo"
 >
 
@@ -740,7 +911,7 @@ button{
 
 <p class="copy">
   Your RSVP has been received.
-  We can't wait to celebrate with you.
+  We can't wait to celebrate with you!
 </p>
 
 
@@ -775,66 +946,102 @@ button{
 
 <script>
 
+
+/************************************************************
+ * APPS SCRIPT WEB APP
+ ************************************************************/
+
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzoVMLBm1wHt24lUhCXA4w5NGCZWH5FxeElg6HAl4MzufP6IIIyExl18ZvBrk-qwfZN8g/exec";
 
 
-let guests = [];
+let guests =
+  [];
 
-let selected = {};
 
-let authToken = "";
+let selected =
+  {};
 
+
+let authToken =
+  "";
+
+
+/************************************************************
+ * ELEMENT REFERENCES
+ ************************************************************/
 
 const lookup =
   document.getElementById(
     "lookup"
   );
 
+
 const response =
   document.getElementById(
     "response"
   );
+
 
 const thanks =
   document.getElementById(
     "thanks"
   );
 
+
+const lookupForm =
+  document.getElementById(
+    "lookupForm"
+  );
+
+
+const responseForm =
+  document.getElementById(
+    "responseForm"
+  );
+
+
 const guestList =
   document.getElementById(
     "guestList"
   );
+
 
 const seatSummary =
   document.getElementById(
     "seatSummary"
   );
 
+
 const nameInput =
   document.getElementById(
     "name"
   );
+
 
 const inviteCodeInput =
   document.getElementById(
     "inviteCode"
   );
 
+
 const lookupStatus =
   document.getElementById(
     "lookupStatus"
   );
+
 
 const responseStatus =
   document.getElementById(
     "responseStatus"
   );
 
+
 const lookupButton =
   document.getElementById(
     "lookupButton"
   );
+
 
 const submitButton =
   document.getElementById(
@@ -842,10 +1049,14 @@ const submitButton =
   );
 
 
+/************************************************************
+ * STATUS MESSAGE
+ ************************************************************/
+
 function showStatus(
   element,
   message
-){
+) {
 
   element.textContent =
     message || "";
@@ -853,22 +1064,30 @@ function showStatus(
 }
 
 
-function show(view){
+/************************************************************
+ * SCREEN SWITCHING
+ ************************************************************/
+
+function show(
+  view
+) {
 
   [
     lookup,
     response,
     thanks
   ].forEach(
-    item =>
-      item.classList.add(
+    section =>
+      section.classList.add(
         "hidden"
       )
   );
 
+
   view.classList.remove(
     "hidden"
   );
+
 
   window.scrollTo({
     top:0,
@@ -878,14 +1097,19 @@ function show(view){
 }
 
 
+/************************************************************
+ * BUTTON LOADING STATE
+ ************************************************************/
+
 function setLoading(
   button,
   loading,
   text
-){
+) {
 
   button.disabled =
     loading;
+
 
   button.textContent =
     loading
@@ -895,13 +1119,19 @@ function setLoading(
 }
 
 
+/************************************************************
+ * VALIDATE CODE
+ ************************************************************/
+
 function isInviteCode(
   value
-){
+) {
 
   return /^[1-9][0-9]{2}$/
     .test(
-      String(value).trim()
+      String(
+        value || ""
+      ).trim()
     );
 
 }
@@ -913,7 +1143,7 @@ function isInviteCode(
 
 function apiRequest(
   params
-){
+) {
 
   return new Promise(
     (
@@ -923,11 +1153,16 @@ function apiRequest(
 
 
       const callbackName =
+
         "rsvpCallback_" +
+
         Date.now() +
+
         "_" +
+
         Math.floor(
-          Math.random() * 100000
+          Math.random() *
+          100000
         );
 
 
@@ -946,7 +1181,8 @@ function apiRequest(
             callbackName,
 
           _:
-            Date.now().toString()
+            Date.now()
+              .toString()
 
         });
 
@@ -955,46 +1191,44 @@ function apiRequest(
         false;
 
 
+      let timeout;
+
+
       const cleanup =
         () => {
 
-          if(
+          if (
             finished
-          ){
+          ) {
+
             return;
+
           }
+
 
           finished =
             true;
+
 
           delete window[
             callbackName
           ];
 
+
           script.remove();
 
-          clearTimeout(
+
+          if (
             timeout
-          );
+          ) {
 
-        };
-
-
-      const timeout =
-        setTimeout(
-          () => {
-
-            cleanup();
-
-            reject(
-              new Error(
-                "Request timed out."
-              )
+            clearTimeout(
+              timeout
             );
 
-          },
-          15000
-        );
+          }
+
+        };
 
 
       window[
@@ -1002,6 +1236,7 @@ function apiRequest(
       ] = result => {
 
         cleanup();
+
 
         resolve(
           result
@@ -1015,6 +1250,7 @@ function apiRequest(
 
           cleanup();
 
+
           reject(
             new Error(
               "Unable to reach RSVP service."
@@ -1022,6 +1258,24 @@ function apiRequest(
           );
 
         };
+
+
+      timeout =
+        setTimeout(
+          () => {
+
+            cleanup();
+
+
+            reject(
+              new Error(
+                "Request timed out."
+              )
+            );
+
+          },
+          15000
+        );
 
 
       script.src =
@@ -1043,14 +1297,20 @@ function apiRequest(
 
 /************************************************************
  * SEAT SUMMARY
+ *
+ * Example:
+ *
+ * 3 seats have been reserved for you.
  ************************************************************/
 
 function updateSeatSummary(
   seats
-){
+) {
 
   const count =
-    Number(seats) ||
+    Number(
+      seats
+    ) ||
     guests.length;
 
 
@@ -1067,7 +1327,8 @@ function updateSeatSummary(
   strong.textContent =
     count === 1
       ? "1 seat"
-      : count + " seats";
+      : count +
+        " seats";
 
 
   seatSummary.appendChild(
@@ -1077,9 +1338,13 @@ function updateSeatSummary(
 
   seatSummary.appendChild(
     document.createTextNode(
+
       count === 1
+
         ? " has been reserved for you."
+
         : " have been reserved for you."
+
     )
   );
 
@@ -1087,13 +1352,14 @@ function updateSeatSummary(
 
 
 /************************************************************
- * GUEST FORM
+ * BUILD GUEST RSVP FORM
  ************************************************************/
 
-function renderGuests(){
+function renderGuests() {
 
   guestList.innerHTML =
     "";
+
 
   selected =
     {};
@@ -1106,14 +1372,18 @@ function renderGuests(){
     ) => {
 
 
-      selected[index] = {
+      selected[
+        index
+      ] = {
 
-        response:"",
+        response:
+          "",
 
         hasDietary:
           undefined,
 
-        dietary:""
+        dietary:
+          ""
 
       };
 
@@ -1123,8 +1393,17 @@ function renderGuests(){
           "div"
         );
 
+
       item.className =
         "guest";
+
+
+      item.style.animationDelay =
+        Math.min(
+          index * 55,
+          275
+        ) +
+        "ms";
 
 
       const guestName =
@@ -1132,17 +1411,24 @@ function renderGuests(){
           "div"
         );
 
+
       guestName.className =
         "guest-name";
+
 
       guestName.textContent =
         guest.name;
 
 
+      /*
+       * ACCEPT / DECLINE
+       */
+
       const choices =
         document.createElement(
           "div"
         );
+
 
       choices.className =
         "choices";
@@ -1153,11 +1439,14 @@ function renderGuests(){
           "button"
         );
 
+
       accept.type =
         "button";
 
+
       accept.className =
         "choice accept";
+
 
       accept.textContent =
         "Joyfully Accepts";
@@ -1168,20 +1457,28 @@ function renderGuests(){
           "button"
         );
 
+
       decline.type =
         "button";
 
+
       decline.className =
         "choice decline";
+
 
       decline.textContent =
         "Regretfully Declines";
 
 
+      /*
+       * DIETARY SECTION
+       */
+
       const dietarySection =
         document.createElement(
           "div"
         );
+
 
       dietarySection.className =
         "dietary-section hidden";
@@ -1192,8 +1489,10 @@ function renderGuests(){
           "div"
         );
 
+
       dietaryLabel.className =
         "dietary-label";
+
 
       dietaryLabel.textContent =
         "Food allergies or dietary restrictions?";
@@ -1204,14 +1503,20 @@ function renderGuests(){
           "div"
         );
 
+
       radioRow.className =
         "radio-row";
 
+
+      /*
+       * YES BUTTON
+       */
 
       const yesWrap =
         document.createElement(
           "div"
         );
+
 
       yesWrap.className =
         "radio-option";
@@ -1222,14 +1527,23 @@ function renderGuests(){
           "input"
         );
 
+
       yesInput.type =
         "radio";
 
+
       yesInput.name =
-        "dietary-" + index;
+        "dietary-" +
+        index;
+
 
       yesInput.id =
-        "diet-yes-" + index;
+        "diet-yes-" +
+        index;
+
+
+      yesInput.value =
+        "Yes";
 
 
       const yesLabel =
@@ -1237,8 +1551,10 @@ function renderGuests(){
           "label"
         );
 
+
       yesLabel.htmlFor =
         yesInput.id;
+
 
       yesLabel.textContent =
         "Yes";
@@ -1250,10 +1566,15 @@ function renderGuests(){
       );
 
 
+      /*
+       * NO BUTTON
+       */
+
       const noWrap =
         document.createElement(
           "div"
         );
+
 
       noWrap.className =
         "radio-option";
@@ -1264,14 +1585,23 @@ function renderGuests(){
           "input"
         );
 
+
       noInput.type =
         "radio";
 
+
       noInput.name =
-        "dietary-" + index;
+        "dietary-" +
+        index;
+
 
       noInput.id =
-        "diet-no-" + index;
+        "diet-no-" +
+        index;
+
+
+      noInput.value =
+        "No";
 
 
       const noLabel =
@@ -1279,8 +1609,10 @@ function renderGuests(){
           "label"
         );
 
+
       noLabel.htmlFor =
         noInput.id;
+
 
       noLabel.textContent =
         "No";
@@ -1293,7 +1625,7 @@ function renderGuests(){
 
 
       /*
-       * YES first, NO second.
+       * YES FIRST, THEN NO
        */
 
       radioRow.append(
@@ -1302,10 +1634,15 @@ function renderGuests(){
       );
 
 
+      /*
+       * DIETARY DETAILS
+       */
+
       const dietaryDetails =
         document.createElement(
           "div"
         );
+
 
       dietaryDetails.className =
         "dietary-details hidden";
@@ -1316,11 +1653,14 @@ function renderGuests(){
           "input"
         );
 
+
       dietaryInput.type =
         "text";
 
+
       dietaryInput.maxLength =
         300;
+
 
       dietaryInput.placeholder =
         "Please tell us about your allergy or dietary restriction";
@@ -1331,8 +1671,10 @@ function renderGuests(){
           "div"
         );
 
+
       dietaryHelp.className =
         "dietary-help";
+
 
       dietaryHelp.textContent =
         "Required only if Yes is selected.";
@@ -1344,53 +1686,88 @@ function renderGuests(){
       );
 
 
-      function clearDietary(){
+      /*
+       * RESET DIETARY
+       */
+
+      function resetDietaryAnswer() {
 
         yesInput.checked =
           false;
 
+
         noInput.checked =
           false;
+
 
         dietaryInput.value =
           "";
 
-        dietaryDetails.classList.add(
-          "hidden"
-        );
 
-        selected[index].hasDietary =
+        dietaryDetails
+          .classList
+          .add(
+            "hidden"
+          );
+
+
+        selected[
+          index
+        ].hasDietary =
           undefined;
 
-        selected[index].dietary =
+
+        selected[
+          index
+        ].dietary =
           "";
 
       }
 
 
-      function setAttendance(
-        value
-      ){
+      /*
+       * SET ATTENDANCE
+       */
 
-        selected[index].response =
+      function setAttendance(
+        value,
+        preserveDietary = false
+      ) {
+
+        const previous =
+          selected[
+            index
+          ].response;
+
+
+        selected[
+          index
+        ].response =
           value;
 
 
-        accept.classList.toggle(
-          "selected",
-          value === "Accepted"
-        );
+        accept
+          .classList
+          .toggle(
+            "selected",
+            value ===
+              "Accepted"
+          );
 
 
-        decline.classList.toggle(
-          "selected",
-          value === "Declined"
-        );
+        decline
+          .classList
+          .toggle(
+            "selected",
+            value ===
+              "Declined"
+          );
 
 
-        if(
-          value === "Accepted"
-        ){
+        if (
+          value ===
+            "Accepted"
+        ) {
 
           dietarySection
             .classList
@@ -1398,14 +1775,35 @@ function renderGuests(){
               "hidden"
             );
 
+
+          /*
+           * Important:
+           * if they switch from Declined to Accepted,
+           * dietary must be answered again.
+           */
+
+          if (
+            !preserveDietary &&
+            previous !==
+              "Accepted"
+          ) {
+
+            resetDietaryAnswer();
+
+          }
+
         }
 
-        else{
+        else {
 
-          clearDietary();
+          resetDietaryAnswer();
 
-          selected[index].hasDietary =
+
+          selected[
+            index
+          ].hasDietary =
             false;
+
 
           dietarySection
             .classList
@@ -1424,25 +1822,45 @@ function renderGuests(){
       }
 
 
-      accept.onclick =
+      accept.addEventListener(
+        "click",
         () =>
           setAttendance(
             "Accepted"
-          );
+          )
+      );
 
 
-      decline.onclick =
+      decline.addEventListener(
+        "click",
         () =>
           setAttendance(
             "Declined"
-          );
+          )
+      );
 
 
-      yesInput.onchange =
+      /*
+       * DIETARY YES
+       */
+
+      yesInput.addEventListener(
+        "change",
         () => {
 
-          selected[index].hasDietary =
+          selected[
+            index
+          ].hasDietary =
             true;
+
+
+          selected[
+            index
+          ].dietary =
+            dietaryInput
+              .value
+              .trim();
+
 
           dietaryDetails
             .classList
@@ -1450,22 +1868,42 @@ function renderGuests(){
               "hidden"
             );
 
+
           dietaryInput.focus();
 
-        };
+
+          showStatus(
+            responseStatus,
+            ""
+          );
+
+        }
+      );
 
 
-      noInput.onchange =
+      /*
+       * DIETARY NO
+       */
+
+      noInput.addEventListener(
+        "change",
         () => {
 
-          selected[index].hasDietary =
+          selected[
+            index
+          ].hasDietary =
             false;
 
-          selected[index].dietary =
+
+          selected[
+            index
+          ].dietary =
             "";
+
 
           dietaryInput.value =
             "";
+
 
           dietaryDetails
             .classList
@@ -1473,70 +1911,35 @@ function renderGuests(){
               "hidden"
             );
 
-        };
+
+          showStatus(
+            responseStatus,
+            ""
+          );
+
+        }
+      );
 
 
-      dietaryInput.oninput =
+      dietaryInput.addEventListener(
+        "input",
         () => {
 
-          selected[index].dietary =
+          selected[
+            index
+          ].dietary =
             dietaryInput
               .value
               .trim();
 
-        };
 
-
-      /*
-       * Existing RSVP prefill.
-       */
-
-      if(
-        guest.rsvp ===
-        "Accepted"
-      ){
-
-        setAttendance(
-          "Accepted"
-        );
-
-
-        if(
-          guest.dietary
-        ){
-
-          yesInput.checked =
-            true;
-
-          selected[index].hasDietary =
-            true;
-
-          dietaryInput.value =
-            guest.dietary;
-
-          selected[index].dietary =
-            guest.dietary;
-
-          dietaryDetails
-            .classList
-            .remove(
-              "hidden"
-            );
+          showStatus(
+            responseStatus,
+            ""
+          );
 
         }
-
-      }
-
-      else if(
-        guest.rsvp ===
-        "Declined"
-      ){
-
-        setAttendance(
-          "Declined"
-        );
-
-      }
+      );
 
 
       choices.append(
@@ -1563,6 +1966,85 @@ function renderGuests(){
         item
       );
 
+
+      /*
+       * PREFILL EXISTING RSVP
+       */
+
+      const existingRsvp =
+        String(
+          guest.rsvp || ""
+        ).trim();
+
+
+      const existingDietary =
+        String(
+          guest.dietary || ""
+        ).trim();
+
+
+      if (
+        existingRsvp ===
+          "Accepted"
+      ) {
+
+        setAttendance(
+          "Accepted",
+          true
+        );
+
+
+        /*
+         * If dietary details already exist,
+         * previous answer was Yes.
+         */
+
+        if (
+          existingDietary
+        ) {
+
+          yesInput.checked =
+            true;
+
+
+          dietaryInput.value =
+            existingDietary;
+
+
+          selected[
+            index
+          ].hasDietary =
+            true;
+
+
+          selected[
+            index
+          ].dietary =
+            existingDietary;
+
+
+          dietaryDetails
+            .classList
+            .remove(
+              "hidden"
+            );
+
+        }
+
+      }
+
+      else if (
+        existingRsvp ===
+          "Declined"
+      ) {
+
+        setAttendance(
+          "Declined",
+          true
+        );
+
+      }
+
     }
   );
 
@@ -1570,37 +2052,57 @@ function renderGuests(){
 
 
 /************************************************************
- * CODE INPUT NUMBERS ONLY
+ * CODE FIELD: NUMBERS ONLY
  ************************************************************/
 
-inviteCodeInput.addEventListener(
-  "input",
-  () => {
+inviteCodeInput
+  .addEventListener(
+    "input",
+    () => {
 
-    inviteCodeInput.value =
-      inviteCodeInput
-        .value
-        .replace(
-          /\D/g,
-          ""
-        )
-        .slice(
-          0,
-          3
-        );
 
-  }
-);
+      inviteCodeInput.value =
+
+        inviteCodeInput
+          .value
+          .replace(
+            /\D/g,
+            ""
+          )
+          .slice(
+            0,
+            3
+          );
+
+
+      showStatus(
+        lookupStatus,
+        ""
+      );
+
+    }
+  );
+
+
+nameInput
+  .addEventListener(
+    "input",
+    () => {
+
+      showStatus(
+        lookupStatus,
+        ""
+      );
+
+    }
+  );
 
 
 /************************************************************
  * FIND INVITATION
  ************************************************************/
 
-document
-  .getElementById(
-    "lookupForm"
-  )
+lookupForm
   .addEventListener(
     "submit",
     async event => {
@@ -1627,30 +2129,38 @@ document
           .trim();
 
 
-      if(
+      if (
         !name
-      ){
+      ) {
 
         showStatus(
           lookupStatus,
           "Please enter your full name."
         );
 
+
+        nameInput.focus();
+
+
         return;
 
       }
 
 
-      if(
+      if (
         !isInviteCode(
           code
         )
-      ){
+      ) {
 
         showStatus(
           lookupStatus,
           "Please enter the 3-digit invitation code provided with your invitation."
         );
+
+
+        inviteCodeInput.focus();
+
 
         return;
 
@@ -1664,25 +2174,27 @@ document
       );
 
 
-      try{
-
+      try {
 
         const result =
           await apiRequest({
 
-            action:"find",
+            action:
+              "find",
 
-            name:name,
+            name:
+              name,
 
-            code:code
+            code:
+              code
 
           });
 
 
-        if(
+        if (
           !result ||
           !result.success
-        ){
+        ) {
 
           showStatus(
 
@@ -1697,19 +2209,21 @@ document
 
           );
 
+
           return;
 
         }
 
 
-        if(
+        if (
           !result.authToken
-        ){
+        ) {
 
           showStatus(
             lookupStatus,
             "Your invitation was found, but secure authentication could not be completed. Please try again."
           );
+
 
           return;
 
@@ -1720,18 +2234,21 @@ document
           Array.isArray(
             result.guests
           )
+
             ? result.guests
+
             : [];
 
 
-        if(
+        if (
           !guests.length
-        ){
+        ) {
 
           showStatus(
             lookupStatus,
-            "We could not load your invitation."
+            "We could not load your invitation. Please try again."
           );
+
 
           return;
 
@@ -1739,8 +2256,15 @@ document
 
 
         authToken =
-          result.authToken;
+          String(
+            result.authToken
+          );
 
+
+        /*
+         * Clear code from the hidden login form
+         * after successful authentication.
+         */
 
         inviteCodeInput.value =
           "";
@@ -1760,7 +2284,11 @@ document
 
       }
 
-      catch(error){
+      catch (error) {
+
+        console.error(
+          error
+        );
 
 
         showStatus(
@@ -1770,8 +2298,7 @@ document
 
       }
 
-      finally{
-
+      finally {
 
         setLoading(
           lookupButton,
@@ -1786,13 +2313,10 @@ document
 
 
 /************************************************************
- * SAVE RSVP
+ * SUBMIT RSVP
  ************************************************************/
 
-document
-  .getElementById(
-    "responseForm"
-  )
+responseForm
   .addEventListener(
     "submit",
     async event => {
@@ -1807,82 +2331,101 @@ document
       );
 
 
-      if(
+      if (
         !authToken
-      ){
+      ) {
 
         showStatus(
           responseStatus,
           "Your RSVP session has expired. Please enter your invitation details again."
         );
 
+
         return;
 
       }
 
 
-      for(
+      /*
+       * Validate every guest before sending.
+       */
+
+      for (
         let i = 0;
         i < guests.length;
         i++
-      ){
+      ) {
 
         const answer =
-          selected[i];
+          selected[
+            i
+          ];
 
 
-        if(
+        if (
           !answer ||
           !answer.response
-        ){
+        ) {
 
           showStatus(
             responseStatus,
             "Please select Joyfully Accepts or Regretfully Declines for " +
-            guests[i].name +
+            guests[
+              i
+            ].name +
             "."
           );
+
 
           return;
 
         }
 
 
-        if(
+        if (
           answer.response ===
             "Accepted" &&
+
           typeof answer.hasDietary !==
             "boolean"
-        ){
+        ) {
 
           showStatus(
             responseStatus,
             "Please answer the dietary restriction question for " +
-            guests[i].name +
+            guests[
+              i
+            ].name +
             "."
           );
+
 
           return;
 
         }
 
 
-        if(
+        if (
           answer.response ===
             "Accepted" &&
+
           answer.hasDietary ===
             true &&
+
           !String(
             answer.dietary || ""
           ).trim()
-        ){
+        ) {
 
           showStatus(
             responseStatus,
             "Please tell us about the dietary restriction for " +
-            guests[i].name +
+            guests[
+              i
+            ].name +
             ", or select No."
           );
+
 
           return;
 
@@ -1902,19 +2445,28 @@ document
               guest.name,
 
             response:
-              selected[index].response,
+              selected[
+                index
+              ].response,
 
             hasDietary:
-              selected[index]
-                .hasDietary === true,
+              selected[
+                index
+              ].hasDietary ===
+                true,
 
             dietary:
-              selected[index]
-                .hasDietary === true
+
+              selected[
+                index
+              ].hasDietary ===
+                true
 
                 ? String(
-                    selected[index]
-                      .dietary || ""
+                    selected[
+                      index
+                    ].dietary ||
+                    ""
                   ).trim()
 
                 : ""
@@ -1930,13 +2482,13 @@ document
       );
 
 
-      try{
-
+      try {
 
         const result =
           await apiRequest({
 
-            action:"rsvp",
+            action:
+              "rsvp",
 
             authToken:
               authToken,
@@ -1949,10 +2501,10 @@ document
           });
 
 
-        if(
+        if (
           !result ||
           !result.success
-        ){
+        ) {
 
           showStatus(
 
@@ -1967,10 +2519,15 @@ document
 
           );
 
+
           return;
 
         }
 
+
+        /*
+         * Clear auth token after successful RSVP.
+         */
 
         authToken =
           "";
@@ -1982,7 +2539,11 @@ document
 
       }
 
-      catch(error){
+      catch (error) {
+
+        console.error(
+          error
+        );
 
 
         showStatus(
@@ -1992,8 +2553,7 @@ document
 
       }
 
-      finally{
-
+      finally {
 
         setLoading(
           submitButton,
@@ -2011,41 +2571,57 @@ document
  * RESET
  ************************************************************/
 
-function resetRSVP(){
+function resetRSVP() {
 
   guests =
     [];
 
+
   selected =
     {};
+
 
   authToken =
     "";
 
+
   guestList.innerHTML =
     "";
+
 
   seatSummary.textContent =
     "";
 
+
   nameInput.value =
     "";
 
+
   inviteCodeInput.value =
     "";
+
 
   showStatus(
     lookupStatus,
     ""
   );
 
+
   showStatus(
     responseStatus,
     ""
   );
 
+
   show(
     lookup
+  );
+
+
+  setTimeout(
+    () =>
+      nameInput.focus(),
+    50
   );
 
 }
