@@ -1297,10 +1297,6 @@ function apiRequest(
 
 /************************************************************
  * SEAT SUMMARY
- *
- * Example:
- *
- * 3 seats have been reserved for you.
  ************************************************************/
 
 function updateSeatSummary(
@@ -1420,9 +1416,9 @@ function renderGuests() {
         guest.name;
 
 
-      /*
+      /******************************************************
        * ACCEPT / DECLINE
-       */
+       ******************************************************/
 
       const choices =
         document.createElement(
@@ -1470,9 +1466,9 @@ function renderGuests() {
         "Regretfully Declines";
 
 
-      /*
+      /******************************************************
        * DIETARY SECTION
-       */
+       ******************************************************/
 
       const dietarySection =
         document.createElement(
@@ -1508,9 +1504,9 @@ function renderGuests() {
         "radio-row";
 
 
-      /*
-       * YES BUTTON
-       */
+      /******************************************************
+       * YES
+       ******************************************************/
 
       const yesWrap =
         document.createElement(
@@ -1566,9 +1562,9 @@ function renderGuests() {
       );
 
 
-      /*
-       * NO BUTTON
-       */
+      /******************************************************
+       * NO
+       ******************************************************/
 
       const noWrap =
         document.createElement(
@@ -1625,7 +1621,7 @@ function renderGuests() {
 
 
       /*
-       * YES FIRST, THEN NO
+       * Yes first, No second.
        */
 
       radioRow.append(
@@ -1634,9 +1630,9 @@ function renderGuests() {
       );
 
 
-      /*
+      /******************************************************
        * DIETARY DETAILS
-       */
+       ******************************************************/
 
       const dietaryDetails =
         document.createElement(
@@ -1686,9 +1682,9 @@ function renderGuests() {
       );
 
 
-      /*
+      /******************************************************
        * RESET DIETARY
-       */
+       ******************************************************/
 
       function resetDietaryAnswer() {
 
@@ -1725,9 +1721,9 @@ function renderGuests() {
       }
 
 
-      /*
-       * SET ATTENDANCE
-       */
+      /******************************************************
+       * ATTENDANCE
+       ******************************************************/
 
       function setAttendance(
         value,
@@ -1775,12 +1771,6 @@ function renderGuests() {
               "hidden"
             );
 
-
-          /*
-           * Important:
-           * if they switch from Declined to Accepted,
-           * dietary must be answered again.
-           */
 
           if (
             !preserveDietary &&
@@ -1840,9 +1830,9 @@ function renderGuests() {
       );
 
 
-      /*
+      /******************************************************
        * DIETARY YES
-       */
+       ******************************************************/
 
       yesInput.addEventListener(
         "change",
@@ -1881,9 +1871,9 @@ function renderGuests() {
       );
 
 
-      /*
+      /******************************************************
        * DIETARY NO
-       */
+       ******************************************************/
 
       noInput.addEventListener(
         "change",
@@ -1967,9 +1957,9 @@ function renderGuests() {
       );
 
 
-      /*
+      /******************************************************
        * PREFILL EXISTING RSVP
-       */
+       ******************************************************/
 
       const existingRsvp =
         String(
@@ -1988,23 +1978,73 @@ function renderGuests() {
           "Accepted"
       ) {
 
+        /*
+         * Show Accepted as selected.
+         */
+
         setAttendance(
           "Accepted",
           true
         );
 
 
-        /*
-         * If dietary details already exist,
-         * previous answer was Yes.
-         */
+        /****************************************************
+         * SAVED "No"
+         *
+         * Accepted + No dietary restrictions.
+         ****************************************************/
 
         if (
+          existingDietary
+            .toLowerCase() ===
+          "no"
+        ) {
+
+          noInput.checked =
+            true;
+
+
+          yesInput.checked =
+            false;
+
+
+          selected[
+            index
+          ].hasDietary =
+            false;
+
+
+          selected[
+            index
+          ].dietary =
+            "";
+
+
+          dietaryDetails
+            .classList
+            .add(
+              "hidden"
+            );
+
+        }
+
+
+        /****************************************************
+         * SAVED ACTUAL DIETARY RESTRICTION
+         *
+         * Accepted + Yes.
+         ****************************************************/
+
+        else if (
           existingDietary
         ) {
 
           yesInput.checked =
             true;
+
+
+          noInput.checked =
+            false;
 
 
           dietaryInput.value =
@@ -2031,7 +2071,40 @@ function renderGuests() {
 
         }
 
+
+        /****************************************************
+         * OLD ACCEPTED ENTRY WITH BLANK DIETARY CELL
+         *
+         * Don't guess Yes or No.
+         * Guest must answer it.
+         ****************************************************/
+
+        else {
+
+          selected[
+            index
+          ].hasDietary =
+            undefined;
+
+
+          yesInput.checked =
+            false;
+
+
+          noInput.checked =
+            false;
+
+
+          dietaryDetails
+            .classList
+            .add(
+              "hidden"
+            );
+
+        }
+
       }
+
 
       else if (
         existingRsvp ===
@@ -2261,11 +2334,6 @@ lookupForm
           );
 
 
-        /*
-         * Clear code from the hidden login form
-         * after successful authentication.
-         */
-
         inviteCodeInput.value =
           "";
 
@@ -2347,7 +2415,7 @@ responseForm
 
 
       /*
-       * Validate every guest before sending.
+       * Validate every guest first.
        */
 
       for (
@@ -2524,10 +2592,6 @@ responseForm
 
         }
 
-
-        /*
-         * Clear auth token after successful RSVP.
-         */
 
         authToken =
           "";
