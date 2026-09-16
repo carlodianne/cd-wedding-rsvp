@@ -347,10 +347,11 @@ button{
 
 
 .summary{
-  margin-top:12px;
+  margin-top:14px;
   color:var(--muted);
-  font-size:14px;
-  line-height:1.5;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+  line-height:1.4;
 }
 
 
@@ -359,7 +360,22 @@ button{
   font-weight:700;
 }
 
+.invitation-title{
+  font-size:30px;
+  font-weight:700;
+}
 
+.invitation-deadline{
+  font-size:16px;
+  line-height:1.6;
+  margin-top:10px;
+}
+
+.invitation-deadline strong{
+  color:var(--deep);
+  font-weight:700;
+}
+  
 .guest-list{
   margin-top:22px;
 }
@@ -582,9 +598,11 @@ button{
 
 }
 
-
 @media(max-width:600px){
-
+.invitation-title{
+  font-size:30px;
+}
+  
   .shell{
     padding:10px;
     align-items:flex-start;
@@ -828,8 +846,8 @@ button{
 
 <div class="center">
 
-<h2>
-  We've found your invitation
+<h2 class="invitation-title">
+  We've found your invitation!
 </h2>
 
 <div
@@ -841,8 +859,8 @@ button{
   Please let us know who will be joining the celebration.
 </p>
 
-<div class="rsvp-deadline">
-  Please RSVP with us on or before October 17, 2026
+<div class="rsvp-deadline invitation-deadline">
+  Please RSVP with us <strong> on or before October 17, 2026 </strong>
 </div>
 
 </div>
