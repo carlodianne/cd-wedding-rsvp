@@ -212,6 +212,16 @@ h2{
 }
 
 
+.rsvp-deadline{
+  margin-top:10px;
+  color:var(--muted);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:12px;
+  line-height:1.45;
+  text-align:center;
+}
+
+
 .form{
   max-width:470px;
   margin:28px auto 0;
@@ -748,6 +758,10 @@ button{
   Enter the 3-digit code provided with your invitation.
 </div>
 
+<div class="rsvp-deadline">
+  Please RSVP with us by October 17, 2026
+</div>
+
 </div>
 
 
@@ -830,6 +844,10 @@ button{
 <p class="copy">
   Please let us know who will be joining the celebration.
 </p>
+
+<div class="rsvp-deadline">
+  Please RSVP with us by October 17, 2026
+</div>
 
 </div>
 
@@ -947,10 +965,6 @@ button{
 <script>
 
 
-/************************************************************
- * APPS SCRIPT WEB APP
- ************************************************************/
-
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzoVMLBm1wHt24lUhCXA4w5NGCZWH5FxeElg6HAl4MzufP6IIIyExl18ZvBrk-qwfZN8g/exec";
 
@@ -966,10 +980,6 @@ let selected =
 let authToken =
   "";
 
-
-/************************************************************
- * ELEMENT REFERENCES
- ************************************************************/
 
 const lookup =
   document.getElementById(
@@ -1049,10 +1059,6 @@ const submitButton =
   );
 
 
-/************************************************************
- * STATUS MESSAGE
- ************************************************************/
-
 function showStatus(
   element,
   message
@@ -1063,10 +1069,6 @@ function showStatus(
 
 }
 
-
-/************************************************************
- * SCREEN SWITCHING
- ************************************************************/
 
 function show(
   view
@@ -1097,10 +1099,6 @@ function show(
 }
 
 
-/************************************************************
- * BUTTON LOADING STATE
- ************************************************************/
-
 function setLoading(
   button,
   loading,
@@ -1119,10 +1117,6 @@ function setLoading(
 }
 
 
-/************************************************************
- * VALIDATE CODE
- ************************************************************/
-
 function isInviteCode(
   value
 ) {
@@ -1136,10 +1130,6 @@ function isInviteCode(
 
 }
 
-
-/************************************************************
- * JSONP REQUEST
- ************************************************************/
 
 function apiRequest(
   params
@@ -1295,10 +1285,6 @@ function apiRequest(
 }
 
 
-/************************************************************
- * SEAT SUMMARY
- ************************************************************/
-
 function updateSeatSummary(
   seats
 ) {
@@ -1346,10 +1332,6 @@ function updateSeatSummary(
 
 }
 
-
-/************************************************************
- * BUILD GUEST RSVP FORM
- ************************************************************/
 
 function renderGuests() {
 
@@ -1416,10 +1398,6 @@ function renderGuests() {
         guest.name;
 
 
-      /******************************************************
-       * ACCEPT / DECLINE
-       ******************************************************/
-
       const choices =
         document.createElement(
           "div"
@@ -1466,10 +1444,6 @@ function renderGuests() {
         "Regretfully Declines";
 
 
-      /******************************************************
-       * DIETARY SECTION
-       ******************************************************/
-
       const dietarySection =
         document.createElement(
           "div"
@@ -1503,10 +1477,6 @@ function renderGuests() {
       radioRow.className =
         "radio-row";
 
-
-      /******************************************************
-       * YES
-       ******************************************************/
 
       const yesWrap =
         document.createElement(
@@ -1562,10 +1532,6 @@ function renderGuests() {
       );
 
 
-      /******************************************************
-       * NO
-       ******************************************************/
-
       const noWrap =
         document.createElement(
           "div"
@@ -1620,19 +1586,11 @@ function renderGuests() {
       );
 
 
-      /*
-       * Yes first, No second.
-       */
-
       radioRow.append(
         yesWrap,
         noWrap
       );
 
-
-      /******************************************************
-       * DIETARY DETAILS
-       ******************************************************/
 
       const dietaryDetails =
         document.createElement(
@@ -1682,10 +1640,6 @@ function renderGuests() {
       );
 
 
-      /******************************************************
-       * RESET DIETARY
-       ******************************************************/
-
       function resetDietaryAnswer() {
 
         yesInput.checked =
@@ -1720,10 +1674,6 @@ function renderGuests() {
 
       }
 
-
-      /******************************************************
-       * ATTENDANCE
-       ******************************************************/
 
       function setAttendance(
         value,
@@ -1830,10 +1780,6 @@ function renderGuests() {
       );
 
 
-      /******************************************************
-       * DIETARY YES
-       ******************************************************/
-
       yesInput.addEventListener(
         "change",
         () => {
@@ -1870,10 +1816,6 @@ function renderGuests() {
         }
       );
 
-
-      /******************************************************
-       * DIETARY NO
-       ******************************************************/
 
       noInput.addEventListener(
         "change",
@@ -1957,10 +1899,6 @@ function renderGuests() {
       );
 
 
-      /******************************************************
-       * PREFILL EXISTING RSVP
-       ******************************************************/
-
       const existingRsvp =
         String(
           guest.rsvp || ""
@@ -1978,21 +1916,11 @@ function renderGuests() {
           "Accepted"
       ) {
 
-        /*
-         * Show Accepted as selected.
-         */
-
         setAttendance(
           "Accepted",
           true
         );
 
-
-        /****************************************************
-         * SAVED "No"
-         *
-         * Accepted + No dietary restrictions.
-         ****************************************************/
 
         if (
           existingDietary
@@ -2028,12 +1956,6 @@ function renderGuests() {
 
         }
 
-
-        /****************************************************
-         * SAVED ACTUAL DIETARY RESTRICTION
-         *
-         * Accepted + Yes.
-         ****************************************************/
 
         else if (
           existingDietary
@@ -2071,13 +1993,6 @@ function renderGuests() {
 
         }
 
-
-        /****************************************************
-         * OLD ACCEPTED ENTRY WITH BLANK DIETARY CELL
-         *
-         * Don't guess Yes or No.
-         * Guest must answer it.
-         ****************************************************/
 
         else {
 
@@ -2124,10 +2039,6 @@ function renderGuests() {
 }
 
 
-/************************************************************
- * CODE FIELD: NUMBERS ONLY
- ************************************************************/
-
 inviteCodeInput
   .addEventListener(
     "input",
@@ -2170,10 +2081,6 @@ nameInput
     }
   );
 
-
-/************************************************************
- * FIND INVITATION
- ************************************************************/
 
 lookupForm
   .addEventListener(
@@ -2380,10 +2287,6 @@ lookupForm
   );
 
 
-/************************************************************
- * SUBMIT RSVP
- ************************************************************/
-
 responseForm
   .addEventListener(
     "submit",
@@ -2413,10 +2316,6 @@ responseForm
 
       }
 
-
-      /*
-       * Validate every guest first.
-       */
 
       for (
         let i = 0;
@@ -2630,10 +2529,6 @@ responseForm
     }
   );
 
-
-/************************************************************
- * RESET
- ************************************************************/
 
 function resetRSVP() {
 
