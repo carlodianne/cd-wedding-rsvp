@@ -657,9 +657,7 @@ button{
 <div class="inner">
 
 
-<!-- ======================================================
-     HOME / LOGIN SCREEN
-======================================================= -->
+<!-- HOME / LOGIN -->
 
 <section id="lookup">
 
@@ -786,9 +784,7 @@ button{
 </section>
 
 
-<!-- ======================================================
-     INVITATION FOUND SCREEN
-======================================================= -->
+<!-- INVITATION FOUND -->
 
 <section
   id="response"
@@ -891,9 +887,7 @@ button{
 </section>
 
 
-<!-- ======================================================
-     THANK YOU SCREEN
-======================================================= -->
+<!-- THANK YOU -->
 
 <section
   id="thanks"
@@ -1127,6 +1121,25 @@ function isInviteCode(
         value || ""
       ).trim()
     );
+
+}
+
+
+/************************************************************
+ * NEW: FIRST + LAST NAME VALIDATION
+ ************************************************************/
+
+function isFullName(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .length >= 2;
 
 }
 
@@ -2116,6 +2129,31 @@ lookupForm
         showStatus(
           lookupStatus,
           "Please enter your full name."
+        );
+
+
+        nameInput.focus();
+
+
+        return;
+
+      }
+
+
+      /*
+       * NEW:
+       * Require at least two words in the name field.
+       */
+
+      if (
+        !isFullName(
+          name
+        )
+      ) {
+
+        showStatus(
+          lookupStatus,
+          "Please enter your full name (first and last name)."
         );
 
 
